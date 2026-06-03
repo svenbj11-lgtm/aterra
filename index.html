@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AlpTerra – Netzwerk für Natürliches Bauen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1C1208;
+  --ink-60:rgba(28,18,8,0.6);
+  --ink-30:rgba(28,18,8,0.3);
+  --ink-10:rgba(28,18,8,0.07);
+  --paper:#F9F5EE;
+  --paper-warm:#F2EBE0;
+  --paper-deep:#E8DDD0;
+  --accent:#B5470A;
+  --accent-light:#D4692E;
+  --accent-pale:#FAF0E8;
+  --line:rgba(28,18,8,0.1);
+  --r:4px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Jost',sans-serif;
+  font-size:15px;line-height:1.75;
+  color:var(--ink);background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(249,245,238,0.96);
+  backdrop-filter:blur(12px);
+  border-bottom:0.5px solid var(--line);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;
+  padding:0 48px;height:64px;gap:0;
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:400;letter-spacing:0.04em;
+  color:var(--ink);text-decoration:none;
+  margin-right:auto;flex-shrink:0;
+}
+.nav-logo em{font-style:italic;color:var(--accent);}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links a{
+  font-size:11.5px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink-60);text-decoration:none;
+  padding:6px 13px;border-radius:var(--r);
+  transition:color 0.15s,background 0.15s;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--ink);background:var(--paper-warm);}
+.nav-cta{
+  background:var(--accent)!important;
+  color:var(--paper)!important;
+  font-weight:500!important;
+  letter-spacing:0.1em!important;
+  text-transform:uppercase!important;
+  margin-left:6px;
+  transition:background 0.2s!important;
+}
+.nav-cta:hover{background:var(--ink)!important;}
+.burger{
+  display:none;background:none;border:none;
+  cursor:pointer;padding:8px;flex-shrink:0;
+  margin-left:8px;
+}
+.burger span{
+  display:block;width:22px;height:1.5px;
+  background:var(--ink);margin:5px 0;
+  transition:transform 0.25s,opacity 0.25s;
+  transform-origin:center;
+}
+/* Burger → X animation */
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* Mobile nav dropdown */
+.mobile-nav{
+  position:absolute;top:64px;left:0;right:0;
+  background:rgba(249,245,238,0.97);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:0.5px solid var(--line);
+  z-index:99;
+  box-shadow:0 12px 40px rgba(28,18,8,0.1);
+  /* slide animation */
+  max-height:0;overflow:hidden;
+  transition:max-height 0.32s cubic-bezier(0.4,0,0.2,1),
+             opacity 0.25s ease;
+  opacity:0;
+}
+.mobile-nav.open{
+  max-height:420px;
+  opacity:1;
+}
+.mobile-nav-inner{
+  display:flex;flex-direction:column;
+  padding:6px 0 12px;
+}
+.mobile-nav a{
+  font-size:12px;font-weight:400;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--ink-60);
+  text-decoration:none;
+  padding:11px 24px;
+  transition:color 0.15s,background 0.15s;
+}
+.mobile-nav a:hover{color:var(--ink);background:var(--paper-warm);}
+.mobile-nav .mob-cta{
+  margin:8px 16px 4px;
+  text-align:center;
+  background:var(--accent);color:var(--paper)!important;
+  padding:11px 24px!important;border-radius:var(--r);
+  font-weight:500!important;letter-spacing:0.12em!important;
+  transition:background 0.2s!important;
+}
+.mobile-nav .mob-cta:hover{background:var(--ink)!important;}
+
+/* ── HERO ── */
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  max-width:1200px;margin:0 auto;
+  padding:88px 48px 72px;
+  gap:64px;align-items:center;
+  min-height:88vh;
+}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-60);
+  margin-bottom:28px;
+}
+.hero-eyebrow::before{
+  content:'';width:28px;height:0.5px;
+  background:var(--ink-30);
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(44px,5.5vw,80px);
+  font-weight:300;line-height:1.07;
+  letter-spacing:-0.025em;color:var(--ink);
+  margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero-text{
+  font-size:16px;color:var(--ink-60);
+  font-weight:300;line-height:1.8;
+  max-width:420px;margin-bottom:36px;
+}
+.hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.btn-primary{
+  display:inline-block;
+  padding:12px 26px;background:var(--ink);color:var(--paper);
+  font-family:'Jost',sans-serif;font-size:11.5px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;
+  border-radius:var(--r);transition:background 0.2s;
+  border:none;cursor:pointer;
+}
+.btn-primary:hover{background:var(--accent);}
+.btn-ghost{
+  display:inline-block;
+  padding:11px 26px;background:transparent;color:var(--ink);
+  font-family:'Jost',sans-serif;font-size:11.5px;font-weight:400;
+  letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;
+  border:0.5px solid var(--line);border-radius:var(--r);
+  transition:border-color 0.2s,color 0.2s;
+}
+.btn-ghost:hover{border-color:var(--ink);color:var(--accent);}
+.hero-right{
+  aspect-ratio:3/4;
+  background:var(--paper-deep);
+  border-radius:var(--r);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.img-placeholder{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:12px;width:100%;height:100%;
+}
+.img-placeholder svg{
+  width:40px;height:40px;opacity:0.2;
+  stroke:var(--ink);fill:none;
+  stroke-width:0.8;stroke-linecap:round;stroke-linejoin:round;
+}
+.img-placeholder p{
+  font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink-30);
+}
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  margin-top:48px;padding-top:28px;
+  border-top:0.5px solid var(--line);
+}
+.stat{padding-right:20px;border-right:0.5px solid var(--line);}
+.stat:last-child{border-right:none;padding-left:20px;padding-right:0;}
+.stat:nth-child(2){padding-left:20px;}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;color:var(--accent);
+  line-height:1;margin-bottom:4px;
+}
+.stat-label{
+  font-size:11px;letter-spacing:0.06em;
+  text-transform:uppercase;color:var(--ink-60);
+}
+
+/* ── SECTIONS ── */
+.section{padding:96px 48px;width:100%;}
+.section-inner{max-width:1200px;margin:0 auto;width:100%;}
+.section-header{
+  display:grid;grid-template-columns:160px 1fr;
+  gap:48px;align-items:start;
+  margin-bottom:64px;
+  padding-bottom:28px;
+  border-bottom:0.5px solid var(--line);
+}
+.section-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:72px;font-weight:300;
+  color:var(--ink-10);line-height:1;
+  user-select:none;flex-shrink:0;
+}
+.section-tag{
+  font-size:11px;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:10px;display:block;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(30px,3.2vw,50px);
+  font-weight:300;line-height:1.12;
+  letter-spacing:-0.02em;color:var(--ink);
+  margin-bottom:14px;
+}
+.section-title em{font-style:italic;}
+.section-lead{
+  font-size:15px;color:var(--ink-60);
+  font-weight:300;line-height:1.8;max-width:520px;
+}
+
+/* ── ÜBER UNS ── */
+#uberuns{background:var(--paper);}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:72px;align-items:start;
+}
+.about-img{
+  aspect-ratio:4/5;background:var(--paper-deep);
+  border-radius:var(--r);overflow:hidden;
+}
+.about-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-style:italic;font-weight:300;
+  color:var(--ink);line-height:1.55;
+  margin-bottom:20px;
+  padding-left:18px;
+  border-left:2px solid var(--accent);
+}
+.about-body{
+  font-size:14px;font-weight:300;color:var(--ink-60);
+  line-height:1.85;margin-bottom:24px;
+}
+.mat-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
+.mat{
+  font-size:11px;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);
+  background:var(--accent-pale);padding:5px 14px;
+  border-radius:var(--r);
+}
+.pillars{display:flex;flex-direction:column;gap:0;}
+.pillar{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:18px 0;border-bottom:0.5px solid var(--line);
+}
+.pillar:first-child{border-top:0.5px solid var(--line);}
+.pillar-letter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:300;color:var(--accent);
+  line-height:1;width:22px;flex-shrink:0;margin-top:2px;
+}
+.pillar h4{font-size:13px;font-weight:500;margin-bottom:3px;}
+.pillar p{font-size:13px;color:var(--ink-60);font-weight:300;line-height:1.6;}
+
+/* ── BERATUNG ── */
+#programs{background:var(--paper-warm);}
+.services-wrap{
+  display:grid;grid-template-columns:280px 1fr;
+  gap:72px;
+}
+.services-sidebar p{
+  font-size:14px;font-weight:300;color:var(--ink-60);
+  line-height:1.85;margin-bottom:28px;
+}
+.service-list{display:flex;flex-direction:column;}
+.service-item{
+  padding:22px 0;border-bottom:0.5px solid var(--line);
+  display:grid;grid-template-columns:30px 1fr 20px;
+  gap:16px;align-items:start;
+}
+.service-item:first-child{border-top:0.5px solid var(--line);}
+.si-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:300;color:var(--ink-30);
+  padding-top:2px;
+}
+.si-body h3{font-size:15px;font-weight:500;margin-bottom:6px;}
+.si-body p{font-size:13px;color:var(--ink-60);font-weight:300;line-height:1.65;}
+.si-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+.si-tag{
+  font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--ink-60);border:0.5px solid var(--line);
+  padding:2px 8px;border-radius:2px;
+}
+.si-arrow{
+  color:var(--accent);font-size:14px;
+  padding-top:4px;opacity:0;
+  transition:opacity 0.15s,transform 0.15s;
+}
+.service-item:hover .si-arrow{opacity:1;transform:translateX(3px);}
+
+/* ── AKADEMIE ── */
+#akademie{background:var(--paper);}
+.akademie-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:72px;align-items:start;
+}
+.kurs-list{display:flex;flex-direction:column;}
+.kurs-item{
+  display:flex;gap:18px;align-items:flex-start;
+  padding:20px 0;border-bottom:0.5px solid var(--line);
+}
+.kurs-item:first-child{border-top:0.5px solid var(--line);}
+.kurs-n{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--accent-pale);border:0.5px solid rgba(181,71,10,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:500;color:var(--accent);flex-shrink:0;
+  margin-top:1px;
+}
+.kurs-item h4{font-size:14px;font-weight:500;margin-bottom:3px;}
+.kurs-item p{font-size:13px;color:var(--ink-60);font-weight:300;line-height:1.5;}
+.kurs-cta{padding:20px 0;}
+.format-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.fmt{
+  background:var(--paper-warm);border:0.5px solid var(--line);
+  border-radius:var(--r);padding:22px;
+  transition:border-color 0.15s;
+}
+.fmt:hover{border-color:rgba(181,71,10,0.3);}
+.fmt-icon{
+  width:34px;height:34px;border-radius:var(--r);
+  background:var(--accent-pale);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+.fmt-icon svg{
+  width:16px;height:16px;stroke:var(--accent);fill:none;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.fmt h4{font-size:13px;font-weight:500;margin-bottom:4px;}
+.fmt p{font-size:12px;color:var(--ink-60);font-weight:300;line-height:1.55;}
+
+/* ── NETZWERK ── */
+#netzwerk{background:var(--ink);width:100%;}
+#netzwerk .section-tag{color:#D4956A;}
+#netzwerk .section-title{color:var(--paper);}
+#netzwerk .section-lead{color:rgba(249,245,238,0.55);}
+#netzwerk .section-header{border-bottom-color:rgba(249,245,238,0.1);}
+#netzwerk .section-num{color:rgba(249,245,238,0.05);}
+.netz-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(249,245,238,0.08);
+  border:0.5px solid rgba(249,245,238,0.08);
+  border-radius:var(--r);overflow:hidden;
+  margin-bottom:1px;
+}
+.ntz{
+  background:var(--ink);padding:32px 28px;
+  transition:background 0.15s;
+}
+.ntz:hover{background:rgba(249,245,238,0.04);}
+.ntz-icon{
+  width:34px;height:34px;border-radius:var(--r);
+  background:rgba(249,245,238,0.06);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.ntz-icon svg{
+  width:15px;height:15px;stroke:rgba(249,245,238,0.4);fill:none;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.ntz h3{font-size:14px;font-weight:500;color:var(--paper);margin-bottom:8px;}
+.ntz p{font-size:13px;color:rgba(249,245,238,0.4);font-weight:300;line-height:1.7;}
+.netz-wide{
+  margin-top:1px;
+  background:rgba(181,71,10,0.14);
+  border:0.5px solid rgba(181,71,10,0.22);
+  border-radius:var(--r);padding:40px 44px;
+}
+.netz-wide-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:center;
+}
+.netz-wide h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;font-weight:300;font-style:italic;
+  color:var(--paper);line-height:1.3;margin-bottom:12px;
+}
+.netz-wide p{
+  font-size:14px;color:rgba(249,245,238,0.5);
+  font-weight:300;line-height:1.8;
+}
+.netz-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.netz-tag{
+  font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(249,245,238,0.6);
+  border:0.5px solid rgba(249,245,238,0.16);
+  padding:4px 12px;border-radius:2px;
+}
+
+/* ── VERANSTALTUNGEN ── */
+#veranstaltungen{background:var(--paper-warm);}
+.ev-list{display:flex;flex-direction:column;}
+.ev-row{
+  display:grid;grid-template-columns:110px 1fr 120px;
+  gap:32px;align-items:center;
+  padding:26px 0;border-bottom:0.5px solid var(--line);
+  transition:background 0.12s;
+}
+.ev-row:first-child{border-top:0.5px solid var(--line);}
+.ev-month{
+  font-size:10px;font-weight:500;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:2px;
+}
+.ev-day{
+  font-family:'Cormorant Garamond',serif;
+  font-size:40px;font-weight:300;color:var(--ink);line-height:1;
+}
+.ev-body h3{font-size:15px;font-weight:500;margin-bottom:5px;}
+.ev-body p{
+  font-size:13px;color:var(--ink-60);
+  font-weight:300;line-height:1.55;max-width:500px;
+}
+.ev-pill{
+  font-size:10px;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);
+  background:var(--accent-pale);padding:5px 12px;
+  border-radius:2px;white-space:nowrap;justify-self:end;
+}
+.ev-note{
+  margin-top:28px;font-size:14px;color:var(--ink-60);
+  font-style:italic;font-weight:300;
+}
+.ev-note a{color:var(--accent);text-decoration:none;}
+
+/* ── MITWIRKEN ── */
+#mitwirken{background:var(--paper);}
+.mit-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--line);border:0.5px solid var(--line);
+  border-radius:var(--r);overflow:hidden;
+}
+.mit-tile{
+  background:var(--paper);padding:32px 28px;
+  transition:background 0.15s;
+  display:flex;flex-direction:column;
+}
+.mit-tile:hover{background:var(--paper-warm);}
+.mit-tile.highlight{background:var(--ink);}
+.mit-tile.highlight:hover{background:#2C1F12;}
+.mit-icon{
+  width:38px;height:38px;border-radius:var(--r);
+  background:var(--accent-pale);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;flex-shrink:0;
+}
+.mit-tile.highlight .mit-icon{background:rgba(249,245,238,0.1);}
+.mit-icon svg{
+  width:17px;height:17px;stroke:var(--accent);fill:none;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.mit-tile.highlight .mit-icon svg{stroke:rgba(249,245,238,0.7);}
+.mit-badge{
+  font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  background:rgba(249,245,238,0.15);color:rgba(249,245,238,0.7);
+  padding:3px 10px;border-radius:2px;margin-bottom:14px;align-self:flex-start;
+}
+.mit-tile h3{font-size:15px;font-weight:500;margin-bottom:8px;}
+.mit-tile.highlight h3{color:var(--paper);}
+.mit-tile p{
+  font-size:13px;color:var(--ink-60);font-weight:300;
+  line-height:1.7;margin-bottom:20px;flex:1;
+}
+.mit-tile.highlight p{color:rgba(249,245,238,0.45);}
+.mit-link{
+  font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:auto;
+  border-bottom:0.5px solid rgba(181,71,10,0.3);padding-bottom:2px;
+  align-self:flex-start;
+  transition:gap 0.15s;
+}
+.mit-link:hover{gap:8px;}
+.mit-tile.highlight .mit-link{
+  color:rgba(249,245,238,0.75);
+  border-bottom-color:rgba(249,245,238,0.2);
+}
+.mit-link::after{content:'→';}
+
+/* ── KONTAKT ── */
+#contact{background:var(--paper-warm);}
+.contact-wrap{
+  display:grid;grid-template-columns:1fr 1.8fr;
+  gap:72px;align-items:start;
+}
+.contact-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:300;font-style:italic;
+  color:var(--ink);line-height:1.6;margin-bottom:32px;
+}
+.ci{padding:16px 0;border-bottom:0.5px solid var(--line);}
+.ci:first-child{border-top:0.5px solid var(--line);}
+.ci-label{
+  font-size:10px;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-60);margin-bottom:4px;
+}
+.ci-val{font-size:14px;color:var(--ink);font-weight:300;}
+.ci-val a{color:var(--accent);text-decoration:none;}
+.soc-wrap{margin-top:24px;}
+.soc-label{
+  font-size:10px;font-weight:500;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--ink-60);margin-bottom:10px;
+}
+.soc-row{display:flex;gap:8px;}
+.soc{
+  width:36px;height:36px;border:0.5px dashed var(--line);
+  border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  transition:border-color 0.15s,background 0.15s;
+}
+.soc:hover{border-color:rgba(181,71,10,0.4);border-style:solid;background:var(--accent-pale);}
+.soc svg{
+  width:14px;height:14px;stroke:var(--ink-60);fill:none;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.form-box{
+  background:var(--paper);border:0.5px solid var(--line);
+  border-radius:var(--r);padding:36px;
+}
+.form-heading{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:300;color:var(--ink);margin-bottom:4px;
+}
+.form-sub{font-size:13px;color:var(--ink-60);font-weight:300;margin-bottom:26px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field{margin-bottom:16px;}
+.field label{
+  display:block;font-size:10px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink-60);margin-bottom:8px;
+}
+.field input,.field select,.field textarea{
+  width:100%;padding:10px 0;
+  background:transparent;border:none;
+  border-bottom:0.5px solid var(--line);
+  font-family:'Jost',sans-serif;font-size:14px;
+  font-weight:300;color:var(--ink);
+  outline:none;transition:border-color 0.2s;
+  border-radius:0;-webkit-appearance:none;appearance:none;
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--ink-30);}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-bottom-color:var(--accent);
+}
+.field textarea{height:100px;resize:none;}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231C1208' stroke-opacity='0.3' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 2px center;
+  padding-right:20px;cursor:pointer;
+}
+.consent-row{
+  display:flex;gap:10px;align-items:flex-start;margin-bottom:22px;
+}
+.consent-row input[type="checkbox"]{
+  width:14px;height:14px;min-width:14px;margin-top:3px;
+  accent-color:var(--accent);cursor:pointer;
+}
+.consent-row label{
+  font-size:12px;color:var(--ink-60);font-weight:300;
+  line-height:1.55;cursor:pointer;
+}
+.consent-row a{color:var(--accent);}
+.btn-send{
+  width:100%;padding:13px;
+  background:var(--ink);color:var(--paper);
+  font-family:'Jost',sans-serif;font-size:11px;
+  font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  border:none;border-radius:var(--r);cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-send:hover{background:var(--accent);}
+#form-success{
+  display:none;text-align:center;padding:40px 16px;
+}
+
+/* ── NEWSLETTER ── */
+.nl-strip{
+  background:var(--accent);
+  padding:52px 48px;
+  display:flex;align-items:center;
+  justify-content:space-between;gap:40px;
+}
+.nl-strip-text h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:300;font-style:italic;
+  color:var(--paper);margin-bottom:4px;
+}
+.nl-strip-text p{
+  font-size:13px;color:rgba(249,245,238,0.65);font-weight:300;
+}
+.nl-strip-form{display:flex;flex-shrink:0;}
+.nl-strip-form input{
+  padding:11px 18px;
+  background:rgba(249,245,238,0.15);
+  border:0.5px solid rgba(249,245,238,0.3);border-right:none;
+  color:var(--paper);font-family:'Jost',sans-serif;font-size:13px;
+  outline:none;border-radius:var(--r) 0 0 var(--r);width:230px;
+}
+.nl-strip-form input::placeholder{color:rgba(249,245,238,0.4);}
+.nl-strip-form button{
+  padding:11px 20px;
+  background:var(--paper);color:var(--ink);
+  font-family:'Jost',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;
+  border:none;border-radius:0 var(--r) var(--r) 0;
+  cursor:pointer;white-space:nowrap;
+  transition:background 0.15s;
+}
+.nl-strip-form button:hover{background:var(--paper-warm);}
+.nl-note{
+  font-size:11px;color:rgba(249,245,238,0.4);
+  text-align:center;margin-top:8px;
+}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:52px 48px 32px;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-top{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:40px;padding-bottom:40px;
+  border-bottom:0.5px solid rgba(249,245,238,0.08);
+  margin-bottom:28px;
+}
+.footer-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px;font-weight:300;letter-spacing:0.04em;
+  color:var(--paper);text-decoration:none;
+  display:block;margin-bottom:10px;
+}
+.footer-logo em{font-style:italic;color:#D4956A;}
+.footer-brand p{
+  font-size:12px;color:rgba(249,245,238,0.3);
+  font-weight:300;line-height:1.7;max-width:200px;
+}
+.footer-col h4{
+  font-size:10px;font-weight:500;letter-spacing:0.18em;
+  text-transform:uppercase;color:rgba(249,245,238,0.3);
+  margin-bottom:14px;
+}
+.footer-col a{
+  display:block;font-size:13px;color:rgba(249,245,238,0.45);
+  font-weight:300;text-decoration:none;margin-bottom:8px;
+  transition:color 0.15s;
+}
+.footer-col a:hover{color:rgba(249,245,238,0.8);}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+}
+.footer-copy{font-size:11px;color:rgba(249,245,238,0.2);font-weight:300;}
+.footer-legal{display:flex;gap:16px;}
+.footer-legal a{
+  font-size:11px;color:rgba(249,245,238,0.2);
+  text-decoration:none;transition:color 0.15s;
+}
+.footer-legal a:hover{color:rgba(249,245,238,0.5);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.hero-left{animation:fadeUp 0.7s 0.1s ease both;}
+.hero-right{animation:fadeUp 0.7s 0.25s ease both;}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE – carefully tested breakpoints
+   ══════════════════════════════════════════ */
+
+/* Tablet wide: 1024–1200px – everything still desktop, just tighter padding */
+@media(max-width:1200px){
+  .nav-inner,.hero,.section{padding-left:32px;padding-right:32px;}
+  footer,.nl-strip{padding-left:32px;padding-right:32px;}
+}
+
+/* Tablet: 768–1024px – two columns, compact */
+@media(max-width:1024px){
+  .nav-inner,.hero,.section{padding-left:24px;padding-right:24px;}
+  footer,.nl-strip{padding-left:24px;padding-right:24px;}
+  .hero{gap:40px;padding-top:64px;padding-bottom:56px;}
+  .about-grid{gap:48px;}
+  .services-wrap{grid-template-columns:220px 1fr;gap:48px;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:28px;}
+}
+
+/* Small tablet / large phone: 768px – switch to single column */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .burger{display:block;}
+  .hero{
+    grid-template-columns:1fr;
+    min-height:auto;padding-top:56px;padding-bottom:48px;gap:32px;
+  }
+  .hero-right{aspect-ratio:16/9;max-height:300px;}
+  .hero-stats{grid-template-columns:1fr 1fr;}
+  .stat:last-child{grid-column:1/-1;border-right:none;padding-left:0;}
+  .section{padding-top:64px;padding-bottom:64px;}
+  .section-header{grid-template-columns:64px 1fr;gap:24px;}
+  .section-num{font-size:48px;}
+  .about-grid,
+  .services-wrap,
+  .akademie-wrap,
+  .contact-wrap{grid-template-columns:1fr;gap:40px;}
+  .netz-grid{grid-template-columns:1fr;}
+  .netz-wide-inner{grid-template-columns:1fr;gap:24px;}
+  .mit-grid{grid-template-columns:1fr;}
+  .ev-row{grid-template-columns:80px 1fr;gap:20px;}
+  .ev-pill{display:none;}
+  .nl-strip{flex-direction:column;gap:24px;}
+  .nl-strip-form{width:100%;}
+  .nl-strip-form input{flex:1;width:auto;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:24px;}
+}
+
+/* Mobile: 480px */
+@media(max-width:480px){
+  .nav-inner,.hero,.section{padding-left:20px;padding-right:20px;}
+  footer,.nl-strip{padding-left:20px;padding-right:20px;}
+  .section{padding-top:52px;padding-bottom:52px;}
+  .section-header{grid-template-columns:1fr;gap:4px;}
+  .section-num{display:none;}
+  .frow{grid-template-columns:1fr;}
+  .format-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .nl-strip-form{flex-direction:column;}
+  .nl-strip-form input{
+    border-right:0.5px solid rgba(249,245,238,0.3);
+    border-bottom:none;
+    border-radius:var(--r) var(--r) 0 0;
+    width:100%;
+  }
+  .nl-strip-form button{border-radius:0 0 var(--r) var(--r);}
+  .hero-stats{grid-template-columns:1fr;}
+  .stat{border-right:none;padding-left:0;padding-right:0;border-bottom:0.5px solid var(--line);padding-bottom:14px;}
+  .stat:last-child{border-bottom:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+  <div class="nav-inner">
+    <!-- LOGO: ersetze mit <a href="#home"><img src="images/logo.svg" alt="AlpTerra" style="height:30px;"></a> -->
+    <a class="nav-logo" href="#home">Alp<em>Terra</em></a>
+    <div class="nav-links">
+      <a href="#uberuns">Über uns</a>
+      <a href="#programs">Beratung</a>
+      <a href="#akademie">Akademie</a>
+      <a href="#netzwerk">Netzwerk</a>
+      <a href="#veranstaltungen">Veranstaltungen</a>
+      <a href="#contact">Kontakt</a>
+      <a href="#mitwirken" class="nav-cta">Mitwirken</a>
+    </div>
+    <button class="burger" id="burger-btn" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-inner">
+      <a href="#uberuns" class="mob-link">Über uns</a>
+      <a href="#programs" class="mob-link">Beratung</a>
+      <a href="#akademie" class="mob-link">Akademie</a>
+      <a href="#netzwerk" class="mob-link">Netzwerk</a>
+      <a href="#veranstaltungen" class="mob-link">Veranstaltungen</a>
+      <a href="#contact" class="mob-link">Kontakt</a>
+      <a href="#mitwirken" class="mob-cta">Mitwirken</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div id="home" class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Gemeinnütziger Verein · Natürliches Bauen</div>
+    <h1>Bauen mit dem,<br>was die Erde<br><em>gibt.</em></h1>
+    <p class="hero-text">AlpTerra ist ein Netzwerk für Menschen, die mit natürlichen Materialien bauen – und dieses Wissen weitergeben möchten. Durch Workshops, Beratung und Gemeinschaft.</p>
+    <div class="hero-actions">
+      <a href="#programs" class="btn-primary">Beratung anfragen</a>
+      <a href="#contact" class="btn-ghost">Kontakt aufnehmen</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Gemeinnützig & unabhängig</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Praxis</div>
+        <div class="stat-label">Workshops & Beratung vor Ort</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Offen</div>
+        <div class="stat-label">Für alle – Einsteiger bis Profi</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <!-- BILD: <img src="images/hero.jpg" alt="Natürliches Bauen" style="width:100%;height:100%;object-fit:cover;"> -->
+    <div class="img-placeholder">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p>Ihr Bild hier</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ÜBER UNS ═══ -->
+<section class="section" id="uberuns">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div>
+        <span class="section-tag">Über uns</span>
+        <h2 class="section-title">Wissen, das in<br>den Händen liegt</h2>
+        <p class="section-lead">Wir bewahren und vermitteln das Handwerk des natürlichen Bauens – mit allem, was die Erde uns gibt.</p>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-img">
+        <!-- BILD: <img src="images/team.jpg" alt="AlpTerra" style="width:100%;height:100%;object-fit:cover;"> -->
+        <div class="img-placeholder">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>Ihr Bild hier</p>
+        </div>
+      </div>
+      <div class="about-text">
+        <p class="about-quote">„Das Wissen über natürliches Bauen ist alt – und gleichzeitig relevanter denn je."</p>
+        <p class="about-body">AlpTerra ist ein gemeinnütziger Verein mit dem Ziel, das Wissen über natürliches Bauen zu bewahren, zu vermitteln und lebendig zu halten. Wir begleiten Menschen, die anders bauen möchten – ob als Selbstbauer, Bauherr oder Neugierige. Unser Angebot reicht von der individuellen Beratung über praktische Workshops bis hin zur Vermittlung innerhalb unseres wachsenden Netzwerks.</p>
+        <div class="mat-row">
+          <span class="mat">Lehm</span>
+          <span class="mat">Stroh</span>
+          <span class="mat">Holz</span>
+          <span class="mat">Kalk</span>
+          <span class="mat">Stein</span>
+          <span class="mat">u.v.m.</span>
+        </div>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-letter">A</div>
+            <div>
+              <h4>Akademie & Bildung</h4>
+              <p>Workshops, Seminare und Bildungsreisen – Wissen wird erlebbar gemacht, nicht nur gelesen.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-letter">B</div>
+            <div>
+              <h4>Beratung & Begleitung</h4>
+              <p>Wir begleiten Selbstbauer und Bauherren von der ersten Idee bis zur Fertigstellung – persönlich und praxisnah.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-letter">C</div>
+            <div>
+              <h4>Gemeinschaft & Netzwerk</h4>
+              <p>Menschen verbinden, die natürliches Bauen nicht als Trend verstehen, sondern als Haltung.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BERATUNG ═══ -->
+<section class="section" id="programs">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div>
+        <span class="section-tag">Beratung</span>
+        <h2 class="section-title">Auf Augenhöhe –<br>von Anfang an</h2>
+        <p class="section-lead">Als gemeinnützige Organisation verbinden wir Beratung immer mit Bildung. Ob Lehmputz, Strohballendämmung, Holzbau oder ökologische Konzepte – wir begleiten euer Projekt von der ersten Idee bis zur Umsetzung.</p>
+      </div>
+    </div>
+    <div class="services-wrap">
+      <div class="services-sidebar">
+        <p>Anfragen willkommen – egal ob konkretes Projekt oder erste Idee.</p>
+        <a href="#contact" class="btn-primary">Anfrage stellen</a>
+      </div>
+      <div class="service-list">
+        <div class="service-item">
+          <div class="si-num">01</div>
+          <div class="si-body">
+            <h3>Bau- & Materialberatung</h3>
+            <p>Begleitung bei der Wahl und Anwendung natürlicher Baustoffe – inklusive Planung, Energieoptimierung und handwerklicher Umsetzung.</p>
+            <div class="si-tags"><span class="si-tag">Lehmbau</span><span class="si-tag">Strohballen</span><span class="si-tag">Holzbau</span></div>
+          </div>
+          <div class="si-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <div class="si-num">02</div>
+          <div class="si-body">
+            <h3>Baubegleitung & Workshops</h3>
+            <p>Direkte Unterstützung am Bauplatz, kombiniert mit praxisnahen Workshops. Selbstbau fördern und Handwerk vermitteln – gemeinsam.</p>
+            <div class="si-tags"><span class="si-tag">Vor Ort</span><span class="si-tag">Selbstbau</span><span class="si-tag">Workshop</span></div>
+          </div>
+          <div class="si-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <div class="si-num">03</div>
+          <div class="si-body">
+            <h3>Ökologische Konzepte</h3>
+            <p>Beratung zu nachhaltiger Versorgung, Kreislaufwirtschaft und ressourcenschonendem Bauen – mit Blick auf das Wesentliche.</p>
+            <div class="si-tags"><span class="si-tag">Energie</span><span class="si-tag">Kreislauf</span><span class="si-tag">Nachhaltigkeit</span></div>
+          </div>
+          <div class="si-arrow">→</div>
+        </div>
+        <div class="service-item">
+          <div class="si-num">04</div>
+          <div class="si-body">
+            <h3>Netzwerk & Vermittlung</h3>
+            <p>Wir bringen Menschen zusammen – Handwerker, Planer, Selbstbauer und Gleichgesinnte aus dem deutschsprachigen Raum.</p>
+            <div class="si-tags"><span class="si-tag">Vernetzung</span><span class="si-tag">Experten</span><span class="si-tag">Community</span></div>
+          </div>
+          <div class="si-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AKADEMIE ═══ -->
+<section class="section" id="akademie">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div>
+        <span class="section-tag">Akademie</span>
+        <h2 class="section-title">Wissen, das man<br><em>anfassen</em> kann</h2>
+        <p class="section-lead">Praxisnahe Bildungsangebote für alle – vom Einsteiger bis zum erfahrenen Handwerker.</p>
+      </div>
+    </div>
+    <div class="akademie-wrap">
+      <div>
+        <div class="kurs-list">
+          <div class="kurs-item">
+            <div class="kurs-n">1</div>
+            <div><h4>Praxis-Workshops Lehmbau</h4><p>Grundlagen bis Expertenwissen – direkt am Material</p></div>
+          </div>
+          <div class="kurs-item">
+            <div class="kurs-n">2</div>
+            <div><h4>Strohballenbau & Dämmung</h4><p>Traditionelle Techniken, modern und praxisnah angewendet</p></div>
+          </div>
+          <div class="kurs-item">
+            <div class="kurs-n">3</div>
+            <div><h4>Holzbau & Zimmermannskunst</h4><p>Handwerkliche Grundlagen und zeitgemäße Anwendung</p></div>
+          </div>
+          <div class="kurs-item">
+            <div class="kurs-n">4</div>
+            <div><h4>Erneuerbare Energiesysteme</h4><p>Autarke Versorgung und ressourcenschonendes Bauen</p></div>
+          </div>
+          <div class="kurs-item">
+            <div class="kurs-n">5</div>
+            <div><h4>Exkursionen & Bildungsreisen</h4><p>Ökologische Vorzeigeprojekte erleben und verstehen</p></div>
+          </div>
+        </div>
+        <div class="kurs-cta">
+          <a href="#veranstaltungen" class="btn-ghost">Kommende Termine →</a>
+        </div>
+      </div>
+      <div class="format-grid">
+        <div class="fmt">
+          <div class="fmt-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h4>Fachseminare</h4>
+          <p>Mehrtägige Intensivkurse mit Experten aus dem Naturbau</p>
+        </div>
+        <div class="fmt">
+          <div class="fmt-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <h4>Online-Kurse</h4>
+          <p>Flexibles Grundlagenwissen – jederzeit verfügbar</p>
+        </div>
+        <div class="fmt">
+          <div class="fmt-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <h4>Praxisprojekte</h4>
+          <p>Lernen an echten Baustellen unter fachkundiger Anleitung</p>
+        </div>
+        <div class="fmt">
+          <div class="fmt-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h4>Exkursionen</h4>
+          <p>Bildungsreisen zu ökologischen Projekten in Europa</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NETZWERK ═══ -->
+<section class="section" id="netzwerk">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div>
+        <span class="section-tag">Netzwerk</span>
+        <h2 class="section-title">Menschen, die<br>anders bauen</h2>
+        <p class="section-lead">AlpTerra bringt Menschen zusammen, die natürliches Bauen nicht als Trend verstehen – sondern als Haltung.</p>
+      </div>
+    </div>
+    <div class="netz-grid">
+      <div class="ntz">
+        <div class="ntz-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Partner & Experten</h3>
+        <p>Handwerker, Techniker und Planer, die ökologische Werte täglich leben und weitergeben.</p>
+      </div>
+      <div class="ntz">
+        <div class="ntz-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <h3>Gemeinsame Projekte</h3>
+        <p>Aus unserem Netzwerk entstehen echte Bauprojekte – begleitet von Workshops und gemeinsamen Werten.</p>
+      </div>
+      <div class="ntz">
+        <div class="ntz-icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></div>
+        <h3>Wissenschaft & Praxis</h3>
+        <p>Wir arbeiten mit Forschungseinrichtungen zusammen und entwickeln zukunftsfähige Bauweisen weiter.</p>
+      </div>
+      <div class="ntz">
+        <div class="ntz-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <h3>Ein wachsendes Netz</h3>
+        <p>Offen für alle, die natürliches Bauen nicht nur als Methode, sondern als gemeinsame Haltung verstehen.</p>
+      </div>
+    </div>
+    <div class="netz-wide">
+      <div class="netz-wide-inner">
+        <div>
+          <h3>Warum braucht es AlpTerra?</h3>
+          <p>Wissen über natürliches Bauen ist oft verstreut – in alten Büchern, bei erfahrenen Handwerkern, in kleinen Projekten. Wir sammeln dieses Wissen, machen es zugänglich und verbinden die Menschen dahinter. Gemeinsam entstehen Dinge, die alleine nicht möglich wären.</p>
+        </div>
+        <div class="netz-tags">
+          <span class="netz-tag">Natürliche Baustoffe</span>
+          <span class="netz-tag">Workshops</span>
+          <span class="netz-tag">Selbstbau</span>
+          <span class="netz-tag">Beratung</span>
+          <span class="netz-tag">Gemeinschaft</span>
+          <span class="netz-tag">Forschung</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VERANSTALTUNGEN ═══ -->
+<section class="section" id="veranstaltungen">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div>
+        <span class="section-tag">Veranstaltungen</span>
+        <h2 class="section-title">Kommende Kurse<br>& Workshops</h2>
+        <p class="section-lead">Praxisnahe Workshops, Seminare und Exkursionen. Erste Termine werden bald bekannt gegeben.</p>
+      </div>
+    </div>
+    <div class="ev-list">
+      <div class="ev-row">
+        <div><div class="ev-month">Demnächst</div><div class="ev-day">—</div></div>
+        <div class="ev-body">
+          <h3>Einführung in den Lehmbau</h3>
+          <p>Grundlagen, Materialien und erste Praxisübungen – offen für alle, die natürliches Bauen kennenlernen möchten.</p>
+        </div>
+        <div class="ev-pill">Workshop</div>
+      </div>
+      <div class="ev-row">
+        <div><div class="ev-month">Demnächst</div><div class="ev-day">—</div></div>
+        <div class="ev-body">
+          <h3>Strohballenbau & Dämmung</h3>
+          <p>Mehrtägiges Intensivseminar mit Praxisteil an einem realen Bauprojekt.</p>
+        </div>
+        <div class="ev-pill">Seminar</div>
+      </div>
+      <div class="ev-row">
+        <div><div class="ev-month">Demnächst</div><div class="ev-day">—</div></div>
+        <div class="ev-body">
+          <h3>Exkursion: Ökologische Bauprojekte</h3>
+          <p>Besichtigung nachhaltiger Bauprojekte in der Region – sehen, was möglich ist.</p>
+        </div>
+        <div class="ev-pill">Exkursion</div>
+      </div>
+    </div>
+    <p class="ev-note">Für aktuelle Termine: <a href="mailto:info@alpterra.at">info@alpterra.at</a></p>
+  </div>
+</section>
+
+<!-- ═══ MITWIRKEN ═══ -->
+<section class="section" id="mitwirken">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div>
+        <span class="section-tag">Mitwirken</span>
+        <h2 class="section-title">Mitmachen &<br>Unterstützen</h2>
+        <p class="section-lead">AlpTerra lebt von Menschen, die mitmachen. Jede Form der Beteiligung stärkt die Gemeinschaft und das natürliche Bauen.</p>
+      </div>
+    </div>
+    <div class="mit-grid">
+      <div class="mit-tile highlight">
+        <div class="mit-badge">Empfohlen</div>
+        <div class="mit-icon"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></div>
+        <h3>Projekt-Mitgliedschaft</h3>
+        <p>Für die Dauer eines Projekts als außerordentliches Mitglied – unkompliziert, ohne langfristige Verpflichtungen.</p>
+        <a href="#contact" class="mit-link">Jetzt anfragen</a>
+      </div>
+      <div class="mit-tile">
+        <div class="mit-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h3>Förder-Mitgliedschaft</h3>
+        <p>Unterstützen Sie unsere Arbeit langfristig. Als Förderer ermöglichen Sie Forschung, Bildung und Wissensarbeit.</p>
+        <a href="#contact" class="mit-link">Mehr erfahren</a>
+      </div>
+      <div class="mit-tile">
+        <div class="mit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <h3>Wissenstransfer & Volontariat</h3>
+        <p>Bringen Sie Ihre Fähigkeiten ein – als Fachkraft im Netzwerk oder bei partizipativen Bauprojekten.</p>
+        <a href="#contact" class="mit-link">Mitmachen</a>
+      </div>
+      <div class="mit-tile">
+        <div class="mit-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Spenden & Zuwendungen</h3>
+        <p>Als gemeinnütziger Verein gem. §§ 34ff BAO fließen alle Beiträge direkt in Bildungsarbeit und Forschung.</p>
+        <a href="#contact" class="mit-link">Spende anfragen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KONTAKT ═══ -->
+<section class="section" id="contact">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div>
+        <span class="section-tag">Kontakt</span>
+        <h2 class="section-title">Schreiben Sie uns</h2>
+        <p class="section-lead">Ob Beratungsanfrage, Workshopbuchung oder Vernetzung – wir freuen uns auf Ihre Nachricht.</p>
+      </div>
+    </div>
+    <div class="contact-wrap">
+      <div>
+        <p class="contact-intro">„Wir freuen uns über jede Anfrage – egal ob konkret oder erst als Idee."</p>
+        <div class="ci">
+          <div class="ci-label">E-Mail</div>
+          <div class="ci-val"><a href="mailto:info@alpterra.at">info@alpterra.at</a></div>
+        </div>
+        <div class="ci">
+          <div class="ci-label">Vereinssitz</div>
+          <div class="ci-val">2384 Breitenfurt bei Wien<br>Österreich</div>
+        </div>
+        <div class="ci">
+          <div class="ci-label">Rechtsstatus</div>
+          <div class="ci-val">Gemeinnütziger Verein<br>gem. §§ 34ff BAO</div>
+        </div>
+        <div class="soc-wrap">
+          <div class="soc-label">Folgen Sie uns</div>
+          <div class="soc-row">
+            <a class="soc" href="INSTAGRAM_URL" title="Instagram">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a class="soc" href="FACEBOOK_URL" title="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a class="soc" href="X_URL" title="X">
+              <svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20" stroke-width="2"/></svg>
+            </a>
+            <a class="soc" href="YOUTUBE_URL" title="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="form-box">
+        <h3 class="form-heading">Nachricht senden</h3>
+        <p class="form-sub">Wir antworten innerhalb von 2–3 Werktagen.</p>
+        <!-- FORMSPREE: formspree.io → New Form → ID kopieren → YOUR_FORM_ID ersetzen -->
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="kontakt-form">
+          <div class="frow">
+            <div class="field">
+              <label>Vorname</label>
+              <input type="text" name="firstname" placeholder="Maria" required/>
+            </div>
+            <div class="field">
+              <label>Nachname</label>
+              <input type="text" name="lastname" placeholder="Huber"/>
+            </div>
+          </div>
+          <div class="field">
+            <label>E-Mail</label>
+            <input type="email" name="email" placeholder="ihre@email.at" required/>
+          </div>
+          <div class="field">
+            <label>Anliegen</label>
+            <select name="subject">
+              <option value="">Bitte wählen …</option>
+              <option>Beratungsanfrage (Bauprojekt)</option>
+              <option>Workshop / Akademie</option>
+              <option>Veranstaltung</option>
+              <option>Mitgliedschaft / Förderung</option>
+              <option>Presse &amp; Medien</option>
+              <option>Sonstiges</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Nachricht</label>
+            <textarea name="message" placeholder="Beschreiben Sie kurz Ihr Anliegen …" required></textarea>
+          </div>
+          <div class="consent-row">
+            <input type="checkbox" id="consent" name="consent" required/>
+            <label for="consent">Ich bin damit einverstanden, dass meine Daten zur Bearbeitung meiner Anfrage gemäß der <a href="#">Datenschutzerklärung</a> verwendet werden.</label>
+          </div>
+          <button class="btn-send" type="submit">Nachricht senden</button>
+        </form>
+        <div id="form-success">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--accent);margin-bottom:8px;">Vielen Dank.</p>
+          <p style="font-size:13px;font-weight:300;color:var(--ink-60);">Wir melden uns innerhalb von 2–3 Werktagen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<div class="nl-strip">
+  <div class="nl-strip-text">
+    <h2>Newsletter abonnieren</h2>
+    <p>Workshops, Projekte und Neuigkeiten – demnächst verfügbar.</p>
+  </div>
+  <div>
+    <div class="nl-strip-form">
+      <input type="email" placeholder="Ihre E-Mail-Adresse" disabled/>
+      <button type="button" disabled style="opacity:0.65;cursor:default;">Anmelden</button>
+    </div>
+    <p class="nl-note">Newsletter-Anmeldung demnächst verfügbar</p>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="footer-logo" href="#home">Alp<em>Terra</em></a>
+        <p>Netzwerk für natürliches Bauen und Lebensweisen. Gemeinnütziger Verein in Österreich.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Organisation</h4>
+        <a href="#uberuns">Über uns</a>
+        <a href="#netzwerk">Netzwerk</a>
+        <a href="#mitwirken">Mitwirken</a>
+      </div>
+      <div class="footer-col">
+        <h4>Angebote</h4>
+        <a href="#programs">Beratung</a>
+        <a href="#akademie">Akademie</a>
+        <a href="#veranstaltungen">Veranstaltungen</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <a href="mailto:info@alpterra.at">info@alpterra.at</a>
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+        <a href="#">Statuten (PDF)</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 AlpTerra – Gemeinnütziger Verein gem. §§ 34ff BAO · 2384 Breitenfurt bei Wien</span>
+      <div class="footer-legal">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Burger Menu ── */
+var btn = document.getElementById('burger-btn');
+var mob = document.getElementById('mobile-nav');
+
+if(btn && mob){
+  btn.addEventListener('click', function(){
+    var isOpen = mob.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+  });
+
+  /* Close on link click */
+  mob.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      mob.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* Close on outside click */
+  document.addEventListener('click', function(e){
+    if(!mob.contains(e.target) && !btn.contains(e.target)){
+      mob.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+/* ── Kontakt Form ── */
+var f = document.getElementById('kontakt-form');
+if(f){
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    fetch(f.action, {
+      method:'POST',
+      body:new FormData(f),
+      headers:{'Accept':'application/json'}
+    }).then(function(r){
+      if(r.ok){
+        f.style.display='none';
+        document.getElementById('form-success').style.display='block';
+      } else {
+        alert('Fehler beim Senden. Bitte schreiben Sie direkt an info@alpterra.at');
+      }
+    }).catch(function(){
+      alert('Netzwerkfehler. Bitte schreiben Sie direkt an info@alpterra.at');
+    });
+  });
+}
+</script>
+</body>
+</html>
