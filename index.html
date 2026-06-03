@@ -1202,7 +1202,7 @@ footer{background:var(--ink);padding:52px 48px 32px;}
         <h3 class="form-heading">Nachricht senden</h3>
         <p class="form-sub">Wir antworten innerhalb von 2–3 Werktagen.</p>
         <!-- FORMSPREE: formspree.io → New Form → ID kopieren → YOUR_FORM_ID ersetzen -->
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="kontakt-form">
+        <form action="https://formspree.io/f/mrevgklq" method="POST" id="kontakt-form">
           <div class="frow">
             <div class="field">
               <label>Vorname</label>
@@ -1337,7 +1337,7 @@ var f = document.getElementById('kontakt-form');
 if(f){
   f.addEventListener('submit', function(e){
     e.preventDefault();
-    fetch(f.action, {
+    fetch('https://formspree.io/f/mrevgklq', {
       method:'POST',
       body:new FormData(f),
       headers:{'Accept':'application/json'}
