@@ -1252,14 +1252,14 @@ footer{background:var(--ink);padding:52px 48px 32px;}
 <div class="nl-strip">
   <div class="nl-strip-text">
     <h2>Newsletter abonnieren</h2>
-    <p>Workshops, Projekte und Neuigkeiten – demnächst verfügbar.</p>
+    <p>Workshops, Projekte und Neuigkeiten – jetzt anmelden.</p>
   </div>
   <div>
-    <div class="nl-strip-form">
-      <input type="email" placeholder="Ihre E-Mail-Adresse" disabled/>
-      <button type="button" disabled style="opacity:0.65;cursor:default;">Anmelden</button>
-    </div>
-    <p class="nl-note">Newsletter-Anmeldung demnächst verfügbar</p>
+    <form action="https://formspree.io/f/xbdejyqg" method="POST" class="nl-strip-form">
+      <input type="email" name="email" placeholder="Ihre E-Mail-Adresse" required/>
+      <button type="submit">Anmelden</button>
+    </form>
+    <p class="nl-note">Wir senden keinen Spam. Abmeldung jederzeit möglich.</p>
   </div>
 </div>
 
